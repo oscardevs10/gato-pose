@@ -1,0 +1,567 @@
+/* ==========================================================================
+   Design Tokens & Modern Dark Theme
+   ========================================================================== */
+:root {
+  --bg-primary: #0d0f12;
+  --bg-secondary: #161a22;
+  --bg-card: #1f2430;
+  --border-subtle: #2d3342;
+  --border-focus: #4e5a74;
+
+  --text-primary: #f0f3f6;
+  --text-secondary: #9da7b7;
+  --text-muted: #6b7280;
+
+  --color-accent: #f59e0b; /* Naranja/dorado como el gato */
+  --color-accent-glow: rgba(245, 158, 11, 0.3);
+  --color-success: #10b981;
+  --color-success-glow: rgba(16, 185, 129, 0.4);
+  --color-danger: #ef4444;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  --transition-fast: 0.15s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-bounce: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ==========================================================================
+   Base Layout
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+.app-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.header-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.25rem 0.75rem;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-accent);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius-full);
+  margin-bottom: 0.5rem;
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 0.25rem;
+}
+
+.app-subtitle {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Pose Detector Wrapper
+   ========================================================================== */
+.pose-detector-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+/* Status Bar */
+.status-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.6rem 1rem;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.status-badge {
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-normal);
+}
+
+.status-badge.waiting {
+  background: rgba(107, 114, 128, 0.2);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-subtle);
+}
+
+.status-badge.detected {
+  background: var(--color-success-glow);
+  color: #a7f3d0;
+  border: 1px solid var(--color-success);
+  box-shadow: 0 0 12px var(--color-success-glow);
+  animation: pulse-border 1.5s infinite;
+}
+
+.status-badge.loading {
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--color-accent);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge.error {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.dot.pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  animation: pulse 1.2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+
+@keyframes pulse-border {
+  0%, 100% { box-shadow: 0 0 8px var(--color-success-glow); }
+  50% { box-shadow: 0 0 18px rgba(16, 185, 129, 0.7); }
+}
+
+/* Score Meter */
+.score-meter-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 120px;
+}
+
+.score-meter-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-card);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+}
+
+.score-meter-bar-fill {
+  height: 100%;
+  transition: width 0.1s ease-out, background-color var(--transition-normal);
+}
+
+.score-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-secondary);
+  min-width: 32px;
+}
+
+.btn-debug-toggle {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.3rem 0.6rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-debug-toggle:hover,
+.btn-debug-toggle.active {
+  color: var(--text-primary);
+  border-color: var(--border-focus);
+  background: var(--bg-card);
+}
+
+/* Instruction Banner */
+.instruction-banner {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 1rem;
+  max-width: 640px;
+  width: 100%;
+  text-align: center;
+}
+
+.instruction-text {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.instruction-text .highlight {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Viewport Stage (Camera & Reaction Overlap)
+   ========================================================================== */
+.viewport-stage {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px var(--border-subtle);
+}
+
+/* Camera Component */
+.camera-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.camera-video.mirror {
+  transform: scaleX(-1);
+}
+
+.camera-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.camera-canvas.mirror {
+  transform: scaleX(-1);
+}
+
+.btn-switch-camera {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1rem;
+  backdrop-filter: blur(4px);
+  transition: transform var(--transition-fast);
+  z-index: 5;
+}
+
+.btn-switch-camera:hover {
+  transform: scale(1.1);
+}
+
+/* Camera Loading & Error Overlays */
+.camera-loading-overlay,
+.camera-error-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  text-align: center;
+  z-index: 10;
+}
+
+.camera-loading-overlay .spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.camera-error-card {
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.camera-error-card .error-icon {
+  font-size: 2.5rem;
+}
+
+.camera-error-card h3 {
+  font-size: 1.1rem;
+  color: #fff;
+}
+
+.camera-error-card p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.btn-retry {
+  margin-top: 0.5rem;
+  background: var(--color-accent);
+  color: #000;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  transition: filter var(--transition-fast);
+}
+
+.btn-retry:hover {
+  filter: brightness(1.1);
+}
+
+/* ==========================================================================
+   Reaction Image Component
+   ========================================================================== */
+.reaction-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+  transition: opacity var(--transition-normal), transform var(--transition-bounce);
+  z-index: 20;
+}
+
+.reaction-container.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+.reaction-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.reaction-img-wrapper {
+  position: relative;
+  max-width: 320px;
+  max-height: 50vh;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8), 0 0 20px var(--color-accent-glow);
+}
+
+.reaction-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.reaction-glow {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 20px var(--color-accent-glow);
+  pointer-events: none;
+}
+
+.reaction-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.badge-detected {
+  background: var(--color-success);
+  color: #000;
+  font-weight: 800;
+  font-size: 0.85rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 12px var(--color-success-glow);
+}
+
+.badge-score {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.35rem 0.6rem;
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   Debug Panel
+   ========================================================================== */
+.debug-panel {
+  width: 100%;
+  max-width: 640px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+}
+
+.debug-panel h4 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.debug-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 0.5rem;
+}
+
+.debug-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 0.4rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.debug-item span {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.debug-item strong {
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.debug-item.total {
+  border-color: var(--color-accent);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.debug-item.total strong {
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
+   Footer
+   ========================================================================== */
+.app-footer {
+  margin-top: auto;
+  text-align: center;
+  padding-top: 1.5rem;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.tech-badge {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .status-bar {
+    justify-content: center;
+  }
+
+  .score-meter-container {
+    width: 100%;
+    order: 3;
+  }
+}
